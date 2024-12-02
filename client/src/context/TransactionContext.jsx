@@ -43,6 +43,20 @@ export const TransactionsProvider = ({ children }) => {
       console.log(error);
     }
   };
+  const checkIfTransactionsExists = async () => {
+    try {
+      if (ethereum) {
+        const transactionsContract = createEthereumContract();
+        const currentTransactionCount = await transactionsContract.getTransactionCount();
+
+        window.localStorage.setItem("transactionCount", currentTransactionCount);
+      }
+    } catch (error) {
+      console.log(error);
+
+      throw new Error("No ethereum object");
+    }
+  };
   const connectWallet = async () => {
     try {
       if (!ethereum) return alert("Please install MetaMask.");
